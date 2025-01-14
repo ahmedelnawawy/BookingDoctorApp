@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Availability.Application.Contract
+namespace SharedKernel
 {
     public interface IStartUp
     {

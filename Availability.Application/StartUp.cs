@@ -4,6 +4,7 @@ using Availability.Data.Contract;
 using Availability.Data.Repo;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SharedKernel;
 
 namespace Availability.Application
 {
