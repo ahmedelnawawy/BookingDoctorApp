@@ -1,7 +1,7 @@
 ﻿using AppointmentBooking.UesCases.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AppHost.Controllers
+namespace AppintmentBooking.APIs.Controllers
 {
     [ApiController]
     [Route("api/Appointments")]

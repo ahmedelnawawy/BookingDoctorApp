@@ -1,4 +1,6 @@
-﻿using IStartup = SharedKernel.Contract.IStartUp;
+﻿using AppintmentBooking.APIs.Controllers;
+using Availability.APIs.Controllers;
+using IStartup = SharedKernel.Contract.IStartUp;
 namespace BookingAppAPIs
 {
     public class Startup

@@ -1,9 +1,8 @@
 ﻿using Availability.Application.Contract;
 using Availability.Application.Dtos;
-using Availability.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AppHost.Controllers
+namespace Availability.APIs.Controllers
 {
     [ApiController]
     [Route("api/DAvailabilities")]
