@@ -6,6 +6,6 @@ namespace Availability.Application.Contract
     public interface IDAvailabilityService
     {
         Task<Guid> CreateDAvailabilityAsync(DAvailabilityDto CreateRequest);
-        Task<DAvailability?> GetOrderAsync(Guid id);
+        Task<DAvailability?> GetDAvailabilityAsync(Guid id);
     }
 }

@@ -1,12 +1,11 @@
-﻿using Availability.Application.Contract;
-using Availability.Application.Services;
-using Availability.Data.Contract;
-using Availability.Data.Repo;
+﻿using AppointmentBooking.Core.Interfaces;
+using AppointmentBooking.Infrastructure.Data;
+using AppointmentBooking.UesCases.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SharedKernel.Contract;
 
-namespace Availability.Application
+namespace AppintmentBooking.APIs
 {
     public class StartUp : IStartUp
     {
@@ -16,16 +15,16 @@ namespace Availability.Application
         {
             confug = configuration;
         }
-        
+
         public void ConfigureServices(IServiceCollection services)
         {
             // Register infrastructure services
-            services.AddScoped<IDAvailabilityRepository, DAvailabilityRepository>();
+            services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 
             // Register application services
-            services.AddScoped<IDAvailabilityService, DAvailabilityService>();
-            
-            
+            services.AddScoped<IAppointmentService, AppointmentService>();
+
+
         }
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SharedKernel.Contract;
 
-namespace Availability.Application
+namespace Availability.APIs
 {
     public class StartUp : IStartUp
     {
@@ -16,7 +16,7 @@ namespace Availability.Application
         {
             confug = configuration;
         }
-        
+
         public void ConfigureServices(IServiceCollection services)
         {
             // Register infrastructure services
@@ -24,8 +24,8 @@ namespace Availability.Application
 
             // Register application services
             services.AddScoped<IDAvailabilityService, DAvailabilityService>();
-            
-            
+
+
         }
     }
 }
