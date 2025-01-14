@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SharedKernel.Contract;
-using SharedKernel.EventBus;
 using SharedKernel.EventBus.Infrastructure;
 
 namespace SharedKernel
