@@ -1,6 +1,6 @@
 ﻿namespace Availability.Application.Dtos
 {
-    public class DAvailabilityDto
+    public class SlotDto
     {
         public DateTime Time { get; set; }
         public int DoctorId { get; set; }

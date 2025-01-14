@@ -25,7 +25,7 @@ namespace BookingAppAPIs
         {
             services.AddHttpContextAccessor();
             services.AddControllers()
-                .AddApplicationPart(typeof(DAvailablityController).Assembly);
+                .AddApplicationPart(typeof(SlotController).Assembly);
             services.AddControllers()
                 .AddApplicationPart(typeof(AppointmentController).Assembly);
             services.AddEndpointsApiExplorer();

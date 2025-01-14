@@ -20,10 +20,10 @@ namespace Availability.APIs
         public void ConfigureServices(IServiceCollection services)
         {
             // Register infrastructure services
-            services.AddScoped<IDAvailabilityRepository, DAvailabilityRepository>();
+            services.AddScoped<ISlotRepository, SlotRepository>();
 
             // Register application services
-            services.AddScoped<IDAvailabilityService, DAvailabilityService>();
+            services.AddScoped<ISlotService, SlotService>();
 
 
         }
