@@ -4,7 +4,8 @@ namespace AppointmentBooking.Core.Interfaces
 {
     public interface IDAvailabilityRepository
     {
-        Task<DAvailabilityRef?> GetByIdAsync(Guid id);
-        Task AddAsync(DAvailabilityRef customer);
+        Task<SlotRef?> GetByIdAsync(Guid id);
+        Task AddAsync(SlotRef slot);
+        Task<bool> IsExisitAsync(Guid id);
     }
 }

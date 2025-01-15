@@ -30,6 +30,11 @@ namespace Availability.Application.Services
             return item.Id;
         }
 
+        public async Task<List<Slot>> GetAllSlotsAsync()
+        {
+            return await _repository.GetAllSlotsAsync();
+        }
+
         public Task<Slot?> GetSlotAsync(Guid id)
         {
             return _repository.GetByIdAsync(id);

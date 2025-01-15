@@ -18,5 +18,10 @@ namespace AppointmentBooking.Infrastructure.Data
             _db[appointment.Id] = appointment;
             return Task.CompletedTask;
         }
+
+        public Task<List<Appointment>> GetAllAsync()
+        {
+            return Task.FromResult(_db.Values.ToList());
+        }
     }
 }

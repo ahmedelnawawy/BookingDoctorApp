@@ -41,5 +41,18 @@ namespace Availability.APIs.Controllers
                 cost = slot.Cost
             });
         }
+
+
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAllSlot()
+        {
+            var slots = await _SlotService.GetAllSlotsAsync();
+            if (slots.Count == 0 )
+            {
+                return NotFound();
+            }
+
+            return Ok(slots);
+        }
     }
 }

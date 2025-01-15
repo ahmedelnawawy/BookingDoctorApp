@@ -6,5 +6,6 @@ namespace Availability.Data.Contract
     {
         Task AddAsync(Slot order);
         Task<Slot?> GetByIdAsync(Guid id);
+        Task<List<Slot>> GetAllSlotsAsync();
     }
 }

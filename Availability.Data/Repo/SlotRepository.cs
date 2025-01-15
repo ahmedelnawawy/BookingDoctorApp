@@ -13,6 +13,12 @@ namespace Availability.Data.Repo
             return Task.CompletedTask;
         }
 
+        public Task<List<Slot>> GetAllSlotsAsync()
+        {
+            var slots = _Slot.ToList();
+            return Task.FromResult(slots);
+        }
+
         public Task<Slot?> GetByIdAsync(Guid id)
         {
             var slot = _Slot.Find(o => o.Id == id);
