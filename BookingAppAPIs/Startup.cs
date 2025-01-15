@@ -1,5 +1,7 @@
 ﻿using AppintmentBooking.APIs.Controllers;
 using Availability.APIs.Controllers;
+using SharedKernel.EventBus.Domain;
+using SharedKernel.EventBus.Infrastructure;
 using IStartup = SharedKernel.Contract.IStartUp;
 namespace BookingAppAPIs
 {
@@ -14,15 +16,17 @@ namespace BookingAppAPIs
             _assebmliesStartUp = new List<IStartup>
             {
                 new Availability.APIs.StartUp(Configuration),
-                new AppintmentBooking.APIs.StartUp(Configuration),
-                new SharedKernel.StartUp(Configuration),
-                
+                new AppintmentBooking.APIs.StartUp(Configuration)
             };
         }
 
         //Add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Register the event bus
+            var eventBus = new InMemoryEventBus();
+            services.AddSingleton(eventBus);
+
             services.AddHttpContextAccessor();
             services.AddControllers()
                 .AddApplicationPart(typeof(SlotController).Assembly);
@@ -32,7 +36,7 @@ namespace BookingAppAPIs
             services.AddSwaggerGen();
 
             // Inject Modules services
-            _assebmliesStartUp.ForEach(startUp => startUp.ConfigureServices(services));
+            _assebmliesStartUp.ForEach(startUp => startUp.ConfigureServices(services,eventBus));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

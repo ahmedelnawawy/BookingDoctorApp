@@ -1,6 +1,6 @@
 ﻿using SharedKernel.EventBus.Domain;
 
-namespace Availability.Domain.Events
+namespace SharedKernel.EventBus.DomainEvents
 {
     public class SlotCreatedEvent : IDomainEvent
     {
@@ -8,7 +8,7 @@ namespace Availability.Domain.Events
         public int DoctorId { get; private set; }
         public DateTime OccurredOn { get; }
 
-        public SlotCreatedEvent (Guid id, int doctorId)
+        public SlotCreatedEvent(Guid id, int doctorId)
         {
             Id = id;
             DoctorId = doctorId;

@@ -2,7 +2,7 @@
 using Availability.Application.Dtos;
 using Availability.Data.Contract;
 using Availability.Domain;
-using Availability.Domain.Events;
+using SharedKernel.EventBus.DomainEvents;
 using SharedKernel.EventBus.Infrastructure;
 
 namespace Availability.Application.Services

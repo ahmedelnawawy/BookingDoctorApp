@@ -32,11 +32,5 @@ namespace SharedKernel.EventBus.Infrastructure
             }
             return Task.CompletedTask;
         }
-
-        public void Subscribe<T>(IDomainEventHandler<T> handler) where T : IDomainEvent
-        {
-            var handlers = _handlers.GetOrAdd(typeof(T), _ => new List<object>());
-            handlers.Add(handler);
-        }
     }
 }

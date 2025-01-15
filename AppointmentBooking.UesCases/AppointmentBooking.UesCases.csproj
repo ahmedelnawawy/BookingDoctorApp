@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AppointmentBooking.Core\AppointmentBooking.Core.csproj" />
+    <ProjectReference Include="..\SharedKernel\SharedKernel.csproj" />
   </ItemGroup>
 
 </Project>
