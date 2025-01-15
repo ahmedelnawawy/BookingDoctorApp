@@ -2,10 +2,11 @@
 
 namespace AppointmentBooking.Core.Interfaces
 {
-    public interface IDAvailabilityRepository
+    public interface ISlotRefRepository
     {
         Task<SlotRef?> GetByIdAsync(Guid id);
+        Task<List<SlotRef>> GetAllAsync();
         Task AddAsync(SlotRef slot);
-        Task<bool> IsExisitAsync(Guid id);
+        Task<bool> IsExisitAndNotReservedAsync(Guid id);
     }
 }

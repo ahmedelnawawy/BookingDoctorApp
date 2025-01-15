@@ -24,7 +24,7 @@ namespace Availability.Application.Services
             await _repository.AddAsync(item);
 
             //Publish SlotCreatedEvent
-            var @event = new SlotCreatedEvent(item.Id, item.DoctorId);
+            var @event = new SlotCreatedEvent(item.Id,item.Time,item.DoctorId,item.DoctorName,item.IsReserved);
             await _eventBus.PublishAsync(@event);
 
             return item.Id;

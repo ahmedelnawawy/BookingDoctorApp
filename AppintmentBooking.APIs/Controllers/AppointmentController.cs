@@ -35,7 +35,7 @@ namespace AppintmentBooking.APIs.Controllers
                 appointment.Id,
                 appointment.PatientId,
                 appointment.PatientName,
-                appointment.DAvailabilityRefId,
+                appointment.SlotRefId,
                 appointment.ReservedAt
             });
         }

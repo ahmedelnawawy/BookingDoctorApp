@@ -18,5 +18,7 @@
             IsReserved = isReserved;
             Cost = cost;
         }
+
+        public void MarkSlotAsReversed(bool isReserved) => IsReserved = isReserved;
     }
 }

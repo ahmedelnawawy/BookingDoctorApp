@@ -24,5 +24,12 @@ namespace Availability.Data.Repo
             var slot = _Slot.Find(o => o.Id == id);
             return Task.FromResult(slot);
         }
+
+        public Task MarkeSlotAsReserved(Guid id, bool IsReserved)
+        {
+            var slotIndex = _Slot.FindIndex(o => o.Id == id);
+            _Slot[slotIndex].MarkSlotAsReversed(IsReserved);
+            return Task.CompletedTask;
+        }
     }
 }

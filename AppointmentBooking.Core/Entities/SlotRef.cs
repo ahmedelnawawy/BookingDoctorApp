@@ -7,9 +7,9 @@
         public int DoctorId { get; private set; }
         public string DoctorName { get; private set; }
         public bool IsReserved { get; private set; }
-        public SlotRef(DateTime time, int doctorId, string doctorName, bool isReserved)
+        public SlotRef(Guid id,DateTime time, int doctorId, string doctorName, bool isReserved)
         {
-            Id = Guid.NewGuid();
+            Id = id;
             Time = time;
             DoctorId = doctorId;
             DoctorName = doctorName;
