@@ -1,5 +1,5 @@
 ﻿using Availability.Data.Contract;
-using SharedKernel.EventBus.Domain;
+using SharedKernel.EventBus.Contracts;
 using SharedKernel.EventBus.DomainEvents;
 
 namespace AppointmentBooking.UesCases.EventHandlers

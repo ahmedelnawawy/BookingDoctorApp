@@ -1,4 +1,4 @@
-﻿namespace SharedKernel.EventBus.Domain
+﻿namespace SharedKernel.EventBus.Contracts
 {
     public interface IDomainEventHandler<T> where T : IDomainEvent
     {

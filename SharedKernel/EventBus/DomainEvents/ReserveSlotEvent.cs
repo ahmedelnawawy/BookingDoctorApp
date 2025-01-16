@@ -1,4 +1,4 @@
-﻿using SharedKernel.EventBus.Domain;
+﻿using SharedKernel.EventBus.Contracts;
 
 namespace SharedKernel.EventBus.DomainEvents
 {

@@ -5,7 +5,6 @@ using Availability.Data.Repo;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SharedKernel.Contract;
-using SharedKernel.EventBus.Infrastructure;
 
 namespace Availability.Application
 {
@@ -18,7 +17,7 @@ namespace Availability.Application
             confug = configuration;
         }
         
-        public void ConfigureServices(IServiceCollection services, InMemoryEventBus eventBus)
+        public void ConfigureServices(IServiceCollection services)
         {
             // Register infrastructure services
             services.AddScoped<ISlotRepository, SlotRepository>();

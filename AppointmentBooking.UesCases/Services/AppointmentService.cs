@@ -1,7 +1,7 @@
 ﻿using AppointmentBooking.Core.Entities;
 using AppointmentBooking.Core.Interfaces;
+using SharedKernel.EventBus.Contracts;
 using SharedKernel.EventBus.DomainEvents;
-using SharedKernel.EventBus.Infrastructure;
 
 namespace AppointmentBooking.UesCases.Services
 {
@@ -11,10 +11,10 @@ namespace AppointmentBooking.UesCases.Services
         private readonly IPatientRepository _Patientrepository;
         private readonly ISlotRefRepository _SlotRefrepository;
 
-        private readonly InMemoryEventBus _eventBus;
+        private readonly IEventBus _eventBus;
 
         public AppointmentService(IAppointmentRepository appointmentRepository, IPatientRepository patientrepository, 
-            ISlotRefRepository slotRefrepository, InMemoryEventBus eventBus)
+            ISlotRefRepository slotRefrepository, IEventBus eventBus)
         {
             _AppointmentRepository = appointmentRepository;
             _Patientrepository = patientrepository;
@@ -34,9 +34,13 @@ namespace AppointmentBooking.UesCases.Services
             var appointment = new Appointment(slotRefId,patientId,patientName,reservedAt);
             await _AppointmentRepository.AddAsync(appointment);
 
+            // Mark SlotRef as reserved
+            await _SlotRefrepository.MarkeSlotAsReserved(slotRefId,true);
+
             //Publish ReserveSlot
             var @event = new ReserveSlotEvent(slotRefId,true);
-            await _eventBus.PublishAsync(@event);
+            await _eventBus.Publish(@event);
+
 
             return appointment.Id;
         }
@@ -72,8 +76,9 @@ namespace AppointmentBooking.UesCases.Services
         #endregion
 
         #region Patients
-        public async Task<Guid> CreatePatientAsync(Patient patient)
+        public async Task<Guid> CreatePatientAsync(string name)
         {
+            var patient = new Patient(name);
             await _Patientrepository.AddAsync(patient);
 
             return patient.Id;

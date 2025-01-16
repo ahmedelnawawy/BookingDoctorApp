@@ -1,5 +1,5 @@
 ﻿using System;
-namespace SharedKernel.EventBus.Domain
+namespace SharedKernel.EventBus.Contracts
 {
     public interface IDomainEvent
     {

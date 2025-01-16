@@ -5,7 +5,7 @@ namespace AppointmentBooking.Infrastructure.Data
 {
     public class AppointmentRepository : IAppointmentRepository
     {
-        private readonly Dictionary<Guid, Appointment> _db = new();
+        private static readonly Dictionary<Guid, Appointment> _db = new();
 
         public Task<Appointment?> GetByIdAsync(Guid id)
         {

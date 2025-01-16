@@ -6,7 +6,7 @@ namespace AppointmentBooking.Core.Entities
         public Guid Id { get; private set; }
         public string PatientName { get; private set; }
 
-        public Patient(Guid id, string patientName) 
+        public Patient(string patientName) 
         { 
             Id = Guid.NewGuid();
             PatientName = patientName;

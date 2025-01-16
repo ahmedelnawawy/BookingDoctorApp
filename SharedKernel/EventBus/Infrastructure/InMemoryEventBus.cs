@@ -1,36 +1,50 @@
-﻿using System.Collections.Concurrent;
-using SharedKernel.EventBus.Domain;
+﻿using Microsoft.Extensions.DependencyInjection;
+using SharedKernel.EventBus.Contracts;
+using System.Collections.Concurrent;
 
 namespace SharedKernel.EventBus.Infrastructure
 {
-    public class InMemoryEventBus
+    public class InMemoryEventBus : IEventBus
     {
-        private readonly ConcurrentDictionary<Type, List<object>> _handlers = new();
+        // this Solution Will use DI To Found Handlers of events then cash them to avoid resolved  them from DI Container 
+        private readonly IServiceProvider _serviceProvider;
+        private readonly ConcurrentDictionary<Type, List<object?>> _handlerCache = new();
 
-
-        public void Register<T>(IDomainEventHandler<T> handler) where T : IDomainEvent
+        public InMemoryEventBus(IServiceProvider serviceProvider)
         {
-            var eventType = typeof(T);
-
-            if (!_handlers.ContainsKey(eventType))
-            {
-                _handlers[eventType] = new List<object>();
-            }
-
-            _handlers[eventType].Add(handler);
+            _serviceProvider = serviceProvider;
         }
 
-        public Task PublishAsync<T>(T domainEvent) where T : IDomainEvent
+        public async Task Publish<T>(T @event) where T : IDomainEvent
         {
-            if (_handlers.TryGetValue(typeof(T), out var handlers))
+            // Resolve and execute handlers within a scope
+            using (var scope = _serviceProvider.CreateScope()) // Create a scope for resolving handlerTypes 
             {
-                var tasks = handlers
-                    .Cast<IDomainEventHandler<T>>()
-                    .Select(handler => handler.HandleAsync(domainEvent));
+                var eventType = typeof(T);
 
-                return Task.WhenAll(tasks);
+                if (!_handlerCache.TryGetValue(eventType, out var handlerInstances))
+                {
+                    // Get handlers for the event type directly from the service provider
+                    handlerInstances = scope.ServiceProvider
+                        .GetServices(typeof(IDomainEventHandler<T>))
+                        .ToList();
+
+                    // Cache the handler instances
+                    _handlerCache.TryAdd(eventType, handlerInstances);
+                }
+                foreach (var handlerInstance in handlerInstances)
+                {
+                    if (handlerInstance is IDomainEventHandler<T> domainEventHandler)
+                    {
+                        // Execute the handler asynchronously
+                        await domainEventHandler.HandleAsync(@event);
+                    }
+                    else
+                    {
+                        throw new InvalidCastException($"Handler {handlerInstance?.GetType()} is not of type {typeof(IDomainEventHandler<T>)}.");
+                    }
+                }
             }
-            return Task.CompletedTask;
         }
     }
 }

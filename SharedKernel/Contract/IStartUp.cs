@@ -5,6 +5,6 @@ namespace SharedKernel.Contract
 {
     public interface IStartUp
     {
-        void ConfigureServices(IServiceCollection services, InMemoryEventBus eventBus);
+        void ConfigureServices(IServiceCollection services);
     }
 }

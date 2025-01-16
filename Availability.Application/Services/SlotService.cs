@@ -2,17 +2,17 @@
 using Availability.Application.Dtos;
 using Availability.Data.Contract;
 using Availability.Domain;
+using SharedKernel.EventBus.Contracts;
 using SharedKernel.EventBus.DomainEvents;
-using SharedKernel.EventBus.Infrastructure;
 
 namespace Availability.Application.Services
 {
     public class SlotService : ISlotService
     {
         private readonly ISlotRepository _repository;
-        private readonly InMemoryEventBus _eventBus;
+        private readonly IEventBus _eventBus;
 
-        public SlotService(ISlotRepository repository, InMemoryEventBus eventBus)
+        public SlotService(ISlotRepository repository, IEventBus eventBus)
         {
             _repository = repository;
             _eventBus = eventBus;
@@ -25,7 +25,7 @@ namespace Availability.Application.Services
 
             //Publish SlotCreatedEvent
             var @event = new SlotCreatedEvent(item.Id,item.Time,item.DoctorId,item.DoctorName,item.IsReserved);
-            await _eventBus.PublishAsync(@event);
+            await _eventBus.Publish(@event);
 
             return item.Id;
         }

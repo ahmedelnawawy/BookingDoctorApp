@@ -5,7 +5,7 @@ namespace SlotRefBooking.Infrastructure.Data
 {
     public class SlotRefRepository : ISlotRefRepository
     {
-        private readonly Dictionary<Guid, SlotRef> _db = new();
+        private static readonly Dictionary<Guid, SlotRef> _db = new();
 
         public Task<SlotRef?> GetByIdAsync(Guid id)
         {
@@ -22,6 +22,13 @@ namespace SlotRefBooking.Infrastructure.Data
         public Task<List<SlotRef>> GetAllAsync()
         {
             return Task.FromResult(_db.Values.ToList());
+        }
+
+        public Task MarkeSlotAsReserved(Guid id, bool IsReserved)
+        {
+            _db.TryGetValue(id, out var slotRef);
+            slotRef?.MarkSlotAsReversed(IsReserved);
+            return Task.CompletedTask;
         }
 
         public Task<bool> IsExisitAndNotReservedAsync(Guid id)

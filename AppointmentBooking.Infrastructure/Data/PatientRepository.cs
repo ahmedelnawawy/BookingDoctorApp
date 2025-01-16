@@ -5,7 +5,7 @@ namespace PatientBooking.Infrastructure.Data
 {
     public class PatientRepository : IPatientRepository
     {
-        private readonly Dictionary<Guid, Patient> _db = new();
+        private static readonly Dictionary<Guid, Patient> _db = new();
 
         public Task<Patient?> GetByIdAsync(Guid id)
         {

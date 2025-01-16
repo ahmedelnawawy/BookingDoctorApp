@@ -12,7 +12,7 @@ namespace AppointmentBooking.UesCases.Services
         Task<List<SlotRef>> GetAllSlotsAsync();
         Task<SlotRef?> GetSlotByIdAsync(Guid id);
 
-        Task<Guid> CreatePatientAsync(Patient patient);
+        Task<Guid> CreatePatientAsync(string name);
         Task<List<Patient>> GetAllPatientsAsync();
         Task<Patient?> GetPatientByIdAsync(Guid id);
 

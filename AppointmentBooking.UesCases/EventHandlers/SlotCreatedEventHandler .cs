@@ -1,7 +1,6 @@
 ﻿using AppointmentBooking.Core.Entities;
-using AppointmentBooking.Core.Interfaces;
 using AppointmentBooking.UesCases.Services;
-using SharedKernel.EventBus.Domain;
+using SharedKernel.EventBus.Contracts;
 using SharedKernel.EventBus.DomainEvents;
 
 namespace AppointmentBooking.UesCases.EventHandlers

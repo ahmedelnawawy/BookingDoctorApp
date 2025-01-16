@@ -15,5 +15,6 @@
             DoctorName = doctorName;
             IsReserved = isReserved;
         }
+        public void MarkSlotAsReversed(bool isReserved) => IsReserved = isReserved;
     }
 }
