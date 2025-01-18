@@ -1,35 +1,49 @@
 ﻿using Availability.Data.Contract;
 using Availability.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace Availability.Data.Repo
 {
     public class SlotRepository : ISlotRepository
     {
-        private static readonly List<Slot> _Slot = new();
-
-        public Task AddAsync(Slot slot)
+        private readonly AvailabilityDbContext _context;
+        public SlotRepository(AvailabilityDbContext context)
         {
-            _Slot.Add(slot);
-            return Task.CompletedTask;
+            _context = context;
         }
 
-        public Task<List<Slot>> GetAllSlotsAsync()
+        public async Task<Guid> AddAsync(Slot slot)
         {
-            var slots = _Slot.ToList();
-            return Task.FromResult(slots);
+            await _context.Slots.AddAsync(slot);
+            await _context.SaveChangesAsync();
+            return slot.Id;
         }
 
-        public Task<Slot?> GetByIdAsync(Guid id)
+        public async Task<List<Slot>> GetAllSlotsAsync()
         {
-            var slot = _Slot.Find(o => o.Id == id);
-            return Task.FromResult(slot);
+            var slots = await _context.Slots.ToListAsync();
+            return slots;
         }
 
-        public Task MarkeSlotAsReserved(Guid id, bool IsReserved)
+        public async Task<Slot> GetByIdAsync(Guid id)
         {
-            var slotIndex = _Slot.FindIndex(o => o.Id == id);
-            _Slot[slotIndex].MarkSlotAsReversed(IsReserved);
-            return Task.CompletedTask;
+            var slot = await _context.Slots.FindAsync(id);
+            if (slot == null)
+            {
+                throw new Exception("Handled in Infra . Not Found Slot");
+            }
+            return slot;
+        }
+
+        public async Task MarkeSlotAsReserved(Guid id, bool IsReserved)
+        {
+            var slot = await _context.Slots.FindAsync(id);
+            if (slot == null)
+            {
+                throw new Exception("Handled in Infra . Not Found Slot");
+            }
+            slot.MarkSlotAsReversed(IsReserved);
+            await _context.SaveChangesAsync();
         }
     }
 }

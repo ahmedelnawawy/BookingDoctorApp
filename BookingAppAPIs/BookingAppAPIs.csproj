@@ -7,13 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\AppintmentBooking.APIs\AppintmentBooking.APIs.csproj" />
+    <ProjectReference Include="..\AppointmentConfirmation\AppointmentConfirmation.csproj" />
     <ProjectReference Include="..\Availability.APIs\Availability.APIs.csproj" />
     <ProjectReference Include="..\SharedKernel\SharedKernel.csproj" />
+    <ProjectReference Include="..\Shell\Shell.csproj" />
   </ItemGroup>
 
 </Project>

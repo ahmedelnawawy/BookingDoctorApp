@@ -25,7 +25,6 @@ namespace SharedKernel.Extention
                     services.AddTransient(@interface, handler);
                 }
             }
-
             return services;
         }
     }

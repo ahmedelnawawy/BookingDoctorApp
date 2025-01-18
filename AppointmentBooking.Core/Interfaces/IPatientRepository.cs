@@ -6,6 +6,6 @@ namespace AppointmentBooking.Core.Interfaces
     {
         Task<Patient?> GetByIdAsync(Guid id);
         Task<List<Patient>> GetAllAsync();
-        Task AddAsync(Patient customer);
+        Task<Guid> AddAsync(Patient patient);
     }
 }

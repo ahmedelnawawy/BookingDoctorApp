@@ -14,13 +14,11 @@ namespace AppointmentBooking.UesCases.EventHandlers
             _service = service;
         }
 
-        public Task HandleAsync(SlotCreatedEvent @event)
+        public async Task HandleAsync(SlotCreatedEvent @event)
         {
-            _service.CreateSlotRefAsync(new SlotRef(@event.Id,@event.Time,@event.DoctorId,@event.DoctorName,@event.IsReserved));
             // Process the event
+            await _service.CreateSlotRefAsync(new SlotRef(@event.Id,@event.Time,@event.DoctorId,@event.DoctorName,@event.IsReserved));
             Console.WriteLine($"New SlotRef created: {"SlotId"+@event.Id +"-"+ @event.DoctorId + "-" + @event.DoctorName + "-" + @event.OccurredOn}");
-
-            return Task.CompletedTask;
         }
     }
 }

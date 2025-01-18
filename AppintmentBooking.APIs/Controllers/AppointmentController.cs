@@ -1,4 +1,5 @@
 ﻿using AppointmentBooking.Core.Entities;
+using AppointmentBooking.UesCases.Exceptions;
 using AppointmentBooking.UesCases.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,10 +17,21 @@ namespace AppintmentBooking.APIs.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAppointment(Guid dAvailabilityRefId, Guid patientId, string patientName, DateTime reservedAt)
+        public async Task<IActionResult> CreateAppointment(Guid SlotId, Guid patientId)
         {
-            var appointmentId = await _AppointmentService.CreateAppointmentAsync(dAvailabilityRefId,patientId,patientName,reservedAt);
-            return Ok(new { AppointmentId = appointmentId });
+            try
+            {
+                var appointmentId = await _AppointmentService.CreateAppointmentAsync(SlotId, patientId);
+                return Ok(new { AppointmentId = appointmentId });
+            }
+            catch(CreateAppointmentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex) {
+                return StatusCode(500, ex.Message);
+            }
+            
         }
 
         [HttpGet("{id:guid}")]

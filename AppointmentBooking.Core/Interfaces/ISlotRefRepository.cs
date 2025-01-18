@@ -6,8 +6,7 @@ namespace AppointmentBooking.Core.Interfaces
     {
         Task<SlotRef?> GetByIdAsync(Guid id);
         Task<List<SlotRef>> GetAllAsync();
-        Task AddAsync(SlotRef slot);
+        Task<Guid> AddAsync(SlotRef slotRef);
         Task MarkeSlotAsReserved(Guid id, bool IsReserved);
-        Task<bool> IsExisitAndNotReservedAsync(Guid id);
     }
 }

@@ -4,7 +4,7 @@ namespace AppointmentBooking.UesCases.Services
 {
     public interface IAppointmentService
     {
-        Task<Guid> CreateAppointmentAsync(Guid slotRefId, Guid patientId, string patientName, DateTime reservedAt);
+        Task<Guid> CreateAppointmentAsync(Guid slotRefId, Guid patientId);
         Task<Appointment?> GetAppointmentByIdAsync(Guid id);
         Task<List<Appointment>> GetAllAppointmentAsync();
 

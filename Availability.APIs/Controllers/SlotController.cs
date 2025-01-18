@@ -1,5 +1,6 @@
 ﻿using Availability.Application.Contract;
 using Availability.Application.Dtos;
+using Availability.Application.Exception;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Availability.APIs.Controllers
@@ -25,21 +26,28 @@ namespace Availability.APIs.Controllers
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetSlot(Guid id)
         {
-            var slot = await _SlotService.GetSlotAsync(id);
-            if (slot == null)
+            try
             {
-                return NotFound();
+                var slot = await _SlotService.GetSlotAsync(id);
+                
+                return Ok(new
+                {
+                    SlotId = slot.Id,
+                    time = slot.Time,
+                    DctorName = slot.DoctorName,
+                    DctorId = slot.DoctorId,
+                    slot.IsReserved,
+                    cost = slot.Cost
+                });
             }
-
-            return Ok(new
+            catch (SlotNotFoundException ex)
             {
-                SlotId = slot.Id,
-                time = slot.Time,
-                DctorName = slot.DoctorName,
-                DctorId = slot.DoctorId,
-                slot.IsReserved,
-                cost = slot.Cost
-            });
+                return NotFound(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An unexpected error occurred." });
+            }
         }
 
 

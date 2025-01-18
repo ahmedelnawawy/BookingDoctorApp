@@ -1,5 +1,6 @@
 ﻿using AppintmentBooking.APIs.Controllers;
 using Availability.APIs.Controllers;
+using Shell.Controllers;
 using IStartup = SharedKernel.Contract.IStartUp;
 namespace BookingAppAPIs
 {
@@ -15,7 +16,10 @@ namespace BookingAppAPIs
             {
                 new Availability.APIs.StartUp(Configuration),
                 new AppintmentBooking.APIs.StartUp(Configuration),
-                new SharedKernel.StartUp(configuration)
+                new SharedKernel.StartUp(configuration),
+                new AppointmentConfirmation.StartUp(Configuration),
+                new Shell.StartUp(Configuration),
+
     };
         }
 
@@ -23,13 +27,19 @@ namespace BookingAppAPIs
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpContextAccessor();
+
+            // Add modules Controllers 
             services.AddControllers()
                 .AddApplicationPart(typeof(SlotController).Assembly);
             services.AddControllers()
                 .AddApplicationPart(typeof(AppointmentController).Assembly);
+            services.AddControllers()
+                .AddApplicationPart(typeof(AppointmentManagementController).Assembly);
+
+
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
-            // Inject Modules services
+            // Inject Modules services Collections
             _assebmliesStartUp.ForEach(startUp => startUp.ConfigureServices(services));
         }
 

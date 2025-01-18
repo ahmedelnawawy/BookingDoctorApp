@@ -1,5 +1,6 @@
 ﻿using AppointmentBooking.Core.Entities;
 using AppointmentBooking.Core.Interfaces;
+using AppointmentBooking.UesCases.Exceptions;
 using SharedKernel.EventBus.Contracts;
 using SharedKernel.EventBus.DomainEvents;
 
@@ -13,7 +14,7 @@ namespace AppointmentBooking.UesCases.Services
 
         private readonly IEventBus _eventBus;
 
-        public AppointmentService(IAppointmentRepository appointmentRepository, IPatientRepository patientrepository, 
+        public AppointmentService(IAppointmentRepository appointmentRepository, IPatientRepository patientrepository,
             ISlotRefRepository slotRefrepository, IEventBus eventBus)
         {
             _AppointmentRepository = appointmentRepository;
@@ -24,24 +25,38 @@ namespace AppointmentBooking.UesCases.Services
 
 
         #region Appointment
-        public async Task<Guid> CreateAppointmentAsync(Guid slotRefId, Guid patientId, string patientName, DateTime reservedAt)
+        public async Task<Guid> CreateAppointmentAsync(Guid slotRefId, Guid patientId)
         {
-            bool IsExisitAndNotReserved = await _SlotRefrepository.IsExisitAndNotReservedAsync(slotRefId);
-            if (!IsExisitAndNotReserved)
+
+            var slot = await _SlotRefrepository.GetByIdAsync(slotRefId);
+
+            if (slot is null || slot.IsReserved)
             {
-                throw new Exception("Slot is not exisit or maybe reserved"); 
+                throw new CreateAppointmentException("Slot is not exisit or maybe reserved"); 
             }
-            var appointment = new Appointment(slotRefId,patientId,patientName,reservedAt);
+
+            var patient =  await _Patientrepository.GetByIdAsync(patientId) ;
+            if (patient is null)
+            {
+                throw new CreateAppointmentException("Patient Id is not exisit");
+            }
+
+            var appointment = new Appointment(slotRefId,patientId,patient.PatientName,slot.Time);
             await _AppointmentRepository.AddAsync(appointment);
 
             // Mark SlotRef as reserved
             await _SlotRefrepository.MarkeSlotAsReserved(slotRefId,true);
-
-            //Publish ReserveSlot
+            //Publish ReserveSlot => this Should be in the Slot Ref Entity but i'm not sure !
             var @event = new ReserveSlotEvent(slotRefId,true);
             await _eventBus.Publish(@event);
 
-
+            // I prefer to make the responsibility of Publish Slot Created Event here instead of repository because in case i will change i will change in both
+            //Also, to keep the repo in the state of separation of concerns, we can create a class with these responsibilities later on in the infrastructure.
+            appointment.SendAppointmentConfirmation(patient.Id, patient.PatientName, slot.DoctorId, slot.DoctorName, appointment.ReservedAt);
+            foreach (var item in appointment.OccurredEvents())
+            {
+                await _eventBus.Publish((AppointmentConfirmationDetailsEvent)item);
+            }
             return appointment.Id;
         }
 

@@ -1,11 +1,11 @@
 ﻿using AppointmentBooking.Core.Interfaces;
 using AppointmentBooking.Infrastructure.Data;
+using AppointmentBooking.Infrastructure.Repo;
 using AppointmentBooking.UesCases.Services;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using PatientBooking.Infrastructure.Data;
 using SharedKernel.Contract;
-using SlotRefBooking.Infrastructure.Data;
 
 namespace AppintmentBooking.APIs
 {
@@ -20,6 +20,10 @@ namespace AppintmentBooking.APIs
 
         public void ConfigureServices(IServiceCollection services)
         {
+            //// Module Database
+            services.AddDbContext<AppointmentBookingDbContext>(options =>
+                options.UseSqlServer(confug.GetConnectionString("AppointmentBookingDB")), ServiceLifetime.Scoped);
+
             // Register infrastructure services
             services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             services.AddScoped<IPatientRepository, PatientRepository>();

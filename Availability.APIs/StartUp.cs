@@ -1,12 +1,12 @@
-﻿using AppointmentBooking.UesCases.EventHandlers;
-using Availability.Application.Contract;
+﻿using Availability.Application.Contract;
 using Availability.Application.Services;
+using Availability.Data;
 using Availability.Data.Contract;
 using Availability.Data.Repo;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SharedKernel.Contract;
-using SharedKernel.EventBus.Contracts;
 
 namespace Availability.APIs
 {
@@ -21,14 +21,9 @@ namespace Availability.APIs
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //// Automatically register all event handlers in the assembly
-            //var assembly = typeof(ReserveSlotEventHandler).Assembly;
-            //foreach (var type in assembly.GetTypes()
-            //         .Where(t => t.GetInterfaces()
-            //             .Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IDomainEventHandler<>))))
-            //{
-            //    services.AddScoped(type);
-            //}
+            //// Module Database
+            services.AddDbContext<AvailabilityDbContext>(options =>
+                options.UseSqlServer(confug.GetConnectionString("DoctorAvailabilityDB")), ServiceLifetime.Scoped);
 
             // Register infrastructure services
             services.AddScoped<ISlotRepository, SlotRepository>();

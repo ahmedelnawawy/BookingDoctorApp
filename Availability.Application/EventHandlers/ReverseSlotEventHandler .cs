@@ -2,7 +2,7 @@
 using SharedKernel.EventBus.Contracts;
 using SharedKernel.EventBus.DomainEvents;
 
-namespace AppointmentBooking.UesCases.EventHandlers
+namespace Availability.Application.EventHandlers
 {
     public class ReserveSlotEventHandler : IDomainEventHandler<ReserveSlotEvent>
     {
@@ -13,13 +13,11 @@ namespace AppointmentBooking.UesCases.EventHandlers
             _slotRepository = repository;
         }
 
-        public Task HandleAsync(ReserveSlotEvent @event)
+        public async Task HandleAsync(ReserveSlotEvent @event)
         {
-            _slotRepository.MarkeSlotAsReserved(@event.Id,@event.IsReserved);
             // Process the event
+            await _slotRepository.MarkeSlotAsReserved(@event.Id,@event.IsReserved);
             Console.WriteLine($"Mark slot as Reserved: {"SlotId"+@event.Id +"-"+ @event.IsReserved + "-" + @event.OccurredOn}");
-
-            return Task.CompletedTask;
         }
     }
 }
